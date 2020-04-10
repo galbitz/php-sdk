@@ -942,7 +942,7 @@ class RealexConnector extends XmlGateway implements IPaymentGateway, IRecurringS
 
         $root = $this->xml2object($rawResponse);
 
-        $this->checkResponse($root, $acceptedCodes);
+        $this->checkResponse($root, $acceptedCodes, $rawResponse);
 
         $result->responseCode = (string)$root->result;
         $result->responseMessage = (string)$root->message;
@@ -1042,7 +1042,7 @@ class RealexConnector extends XmlGateway implements IPaymentGateway, IRecurringS
         return $result;
     }
 
-    protected function checkResponse($root, array $acceptedCodes = null)
+    protected function checkResponse($root, array $acceptedCodes = null, $rawResponse)
     {
         if ($acceptedCodes === null) {
             $acceptedCodes = [ "00" ];
@@ -1055,7 +1055,9 @@ class RealexConnector extends XmlGateway implements IPaymentGateway, IRecurringS
             throw new GatewayException(
                 sprintf('Unexpected Gateway Response: %s - %s', $responseCode, $responseMessage),
                 $responseCode,
-                $responseMessage
+                $responseMessage,
+                null,
+                $rawResponse
             );
         }
     }

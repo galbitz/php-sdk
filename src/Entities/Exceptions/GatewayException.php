@@ -19,6 +19,13 @@ class GatewayException extends ApiException
     public $responseMessage;
 
     /**
+     * Server response
+     *
+     * @var string
+     */
+    public $rawResponse;
+
+    /**
      * Instantiates a new object
      *
      * @param string $message The exception message to throw.
@@ -29,10 +36,12 @@ class GatewayException extends ApiException
         $message,
         $responseCode = null,
         $responseMessage = null,
-        \Exception $innerException = null
+        \Exception $innerException = null,
+        $rawResponse = null
     ) {
         $this->responseCode = $responseCode;
         $this->responseMessage = $responseMessage;
+        $this->rawResponse = $rawResponse;
 
         parent::__construct($message, $innerException);
     }
